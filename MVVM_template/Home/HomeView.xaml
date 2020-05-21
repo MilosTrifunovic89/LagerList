@@ -1,0 +1,204 @@
+﻿<UserControl x:Class="LagerLista.Home.HomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LagerLista.Home"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1000">
+    
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="VisibilityConverter" />
+    </UserControl.Resources>
+    
+    <Grid Margin="5" Background="#797994">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3.7*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Margin="1" Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="2">
+            <Image  Source="/assets/images/iverice.jpg" Stretch="Fill"/>
+        </StackPanel>
+
+        <StackPanel Grid.ColumnSpan="2">
+            <Menu Margin="0,0,2,0">
+                <MenuItem Header="Мену">
+                    <MenuItem Header="Рачунање утрошака"/>
+                    <Separator/>
+                    <MenuItem Header="Излаз">
+                        <MenuItem.Icon>
+                            <Image Source="/assets/icons/exit_icon.png" Stretch="Fill"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="Помоћ">
+                    <MenuItem Header="О програму"/>
+                </MenuItem>
+            </Menu>
+        </StackPanel>
+
+        <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,30,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="1.3*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border  BorderBrush="Black" BorderThickness="2" Grid.Column="2" Background="White" Opacity="0.8">
+                <Label Content="Лагер Листа" Style="{StaticResource HeaderLabel}" />
+            </Border>
+        </Grid>
+
+        <StackPanel Grid.Row="2" HorizontalAlignment="Right" Orientation="Horizontal" Height="30">
+
+            <ComboBox Style="{StaticResource ComboBox}" Width="250" ItemsSource="{Binding TypesOfPanel}" SelectedItem="{Binding SelectedItemForSearch}"/>
+
+            <TextBox  Style="{StaticResource InputTextBox}"/>
+            <Button Style="{StaticResource SearchButton}" ToolTip="Pretrazi">
+                <Image Source="/Assets/Icons/Search_icon.png" Stretch="Fill"/>
+            </Button>
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="5,10,5,5">
+            <ListView SelectedItem="{Binding SelectedMaterial}" HorizontalContentAlignment="Stretch" ItemsSource="{Binding LagerList}" 
+                      Background="{StaticResource ThemeWhite}" Foreground="{StaticResource ThemeBlack}"
+                      Opacity="0.82">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="False" ColumnHeaderToolTip="Лагер листа">
+
+                        <GridViewColumn Header="Рб.">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Id}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Назив">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Дужина">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Length}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Ширина">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Width}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Дебљина">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Thickness}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Количина">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Quantity}" Style="{StaticResource TableHeader}" Foreground="Red"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn>
+                            <TextBlock Text="Површина табле m">
+                                <Run Typography.Variants="Superscript" Text="2"/>
+                            </TextBlock>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding PanelSurface}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn >
+                            <TextBlock Text="Укупна површина m">
+                                <Run Typography.Variants="Superscript" Text="2"/>
+                            </TextBlock>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding SurfaceInTotal}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Датум убацивања">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding InsertTime}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Датум ажурирања">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding UpdateTime}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Врста">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding TypeOfPanel}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Материјал креирао">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Operater}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Материјал ажурирао">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding UpdateOperater}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="3" Grid.Column="1"  VerticalAlignment="Top" Orientation="Vertical" Margin="3,6,3,0" Visibility="{Binding RoleMode, Converter={StaticResource VisibilityConverter}}">
+            <Button Command="{Binding AddNewMaterialCommand}" Content="Додај нови материјал" Style="{StaticResource CommandButton}"/>
+            <Button Click="OnUpdateMaterialButtonClick_Event" Content="Ажурирај постојећи" Style="{StaticResource CommandButton}"/>
+            <Button Click="OnDeleteMaterialButtonClick_Event" Content="Избриши" Style="{StaticResource CommandButton}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Bottom">
+            <Button Content="Напусти апликацију" Style="{StaticResource CommandButton}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
