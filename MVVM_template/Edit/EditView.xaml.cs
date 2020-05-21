@@ -45,21 +45,6 @@ namespace LagerLista.Edit
         {
             System.Text.RegularExpressions.Regex reg = new System.Text.RegularExpressions.Regex("[^0-9]-$");
             return reg.IsMatch(str);
-
         }
-
-        //private void OnUpdateMaterialButtonClick_Event(object sender, RoutedEventArgs e)
-        //{
-        //    if (this.DataContext is HomeViewModel homeViewModel)
-        //    {
-        //        if (homeViewModel.SelectedMaterial == null)
-        //        {
-        //            MessageBox.Show("Најпре одабери материјал који мењаш", "Порука", MessageBoxButton.OK, MessageBoxImage.Warning);
-        //            return;
-        //        }
-        //        else
-        //            homeViewModel.EditSelectedMaterialCommand.Execute(null);
-        //    }
-        //}
     }
 }
