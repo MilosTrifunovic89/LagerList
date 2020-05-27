@@ -57,6 +57,7 @@
     <Compile Include="EntityConfigurations\ThicknessConfiguration.cs" />
     <Compile Include="EntityConfigurations\TypeConfiguration.cs" />
     <Compile Include="EntityConfigurations\WidthConfiguration.cs" />
+    <Compile Include="EntityConfigurations\WorkbenchConfiguration.cs" />
     <Compile Include="LagerListContext.cs" />
     <Compile Include="Length.cs" />
     <Compile Include="Migrations\202005131832235_InitialMigration.cs" />
@@ -71,6 +72,14 @@
     <Compile Include="Migrations\202005191800532_changeToNonNullabelForeignKeyToPanel.designer.cs">
       <DependentUpon>202005191800532_changeToNonNullabelForeignKeyToPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005261623136_AddWorkBenchTable.cs" />
+    <Compile Include="Migrations\202005261623136_AddWorkBenchTable.designer.cs">
+      <DependentUpon>202005261623136_AddWorkBenchTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005261640096_changeLengthIdName.cs" />
+    <Compile Include="Migrations\202005261640096_changeLengthIdName.designer.cs">
+      <DependentUpon>202005261640096_changeLengthIdName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Operater.cs" />
     <Compile Include="Panel.cs" />
@@ -80,6 +89,8 @@
     <Compile Include="Thickness.cs" />
     <Compile Include="TypeOfPanel.cs" />
     <Compile Include="Width.cs" />
+    <Compile Include="Workbench.cs" />
+    <Compile Include="WorkbenchEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -94,6 +105,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005191800532_changeToNonNullabelForeignKeyToPanel.resx">
       <DependentUpon>202005191800532_changeToNonNullabelForeignKeyToPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005261623136_AddWorkBenchTable.resx">
+      <DependentUpon>202005261623136_AddWorkBenchTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005261640096_changeLengthIdName.resx">
+      <DependentUpon>202005261640096_changeLengthIdName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

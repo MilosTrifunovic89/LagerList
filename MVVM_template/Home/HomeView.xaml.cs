@@ -29,7 +29,7 @@ namespace LagerLista.Home
         {
             if (this.DataContext is HomeViewModel homeViewModel)
             {
-                if (homeViewModel.SelectedMaterial == null)
+                if (homeViewModel.SelectedMaterial == null && homeViewModel.SelectedWorkbench == null)
                 {
                     MessageBox.Show("Најпре одабери материјал који мењаш", "Порука", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;

@@ -19,8 +19,9 @@ namespace LagerLista.Main
             _homeViewModel = homeViewModel;
             _homeViewModel.Started += homeViewModel_Started;
             _homeViewModel.AddNewMaterial += homeViewModel_AddNewMaterial;
-            _homeViewModel.EditSelectedMaterial += homeViewModel_EditSelectedMaterial;
+            _homeViewModel.EditSelectedPanel += homeViewModel_EditSelectedPanel;
             _homeViewModel.DeleteMaterial += homeViewModel_DeleteSelectedMaterial;
+            _homeViewModel.EditSelectedWorkbench += homeViewModel_EditSelectedWorkbench;
 
             _editViewModel = editViewModel;
             _editViewModel.Started += editViewModel_Started;
@@ -66,7 +67,13 @@ namespace LagerLista.Main
             _homeViewModel.LagerList.Remove(e.Panel);
         }
 
-        private void homeViewModel_EditSelectedMaterial(object sender, PanelEventArgs e)
+        private void homeViewModel_EditSelectedWorkbench(object sender, WorkbenchEventArgs e)
+        {
+            _editViewModel.Workbench = e.Workbench;
+            _editViewModel.Start(HomeViewModelResultType.EditExisting);
+        }
+
+        private void homeViewModel_EditSelectedPanel(object sender, PanelEventArgs e)
         {
             _editViewModel.Panel = e.Panel;
             _editViewModel.Start(HomeViewModelResultType.EditExisting);

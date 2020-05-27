@@ -20,6 +20,10 @@ namespace Domain
 
         public ICollection<Panel> UpdatedPanels { get; set; }
 
+        public ICollection<Workbench> Workbenches { get; set; }
+
+        public ICollection<Workbench> UpdatedWorkbenches { get; set; }
+
         public DateTime DateCreated { get; set; }
 
         public DateTime? DateDeleted { get; set; }

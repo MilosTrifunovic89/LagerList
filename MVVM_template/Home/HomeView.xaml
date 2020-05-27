@@ -22,9 +22,11 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Margin="1" Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="2">
+        <StackPanel Margin="1" Grid.Row="1" Grid.RowSpan="5" Grid.ColumnSpan="2">
             <Image  Source="/assets/images/iverice.jpg" Stretch="Fill"/>
         </StackPanel>
 
@@ -170,7 +172,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="Материјал креирао">
+                        <GridViewColumn Header="Материјал унео">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Operater}" Style="{StaticResource TableHeader}"/>
@@ -197,7 +199,115 @@
             <Button Click="OnDeleteMaterialButtonClick_Event" Content="Избриши" Style="{StaticResource CommandButton}"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Bottom">
+        <ScrollViewer Grid.Row="5" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="5,10,5,5">
+            <ListView SelectedItem="{Binding SelectedWorkbench}" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Workbenches}" 
+                      Background="{StaticResource ThemeWhite}" Foreground="{StaticResource ThemeBlack}"
+                      Opacity="0.82">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="False" ColumnHeaderToolTip="Лагер листа">
+
+                        <GridViewColumn Header="Рб.">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Id}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Назив">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Дужина">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Length}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Ширина">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Width}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Дебљина">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Thickness}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Количина">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Quantity}" Style="{StaticResource TableHeader}" Foreground="Red"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Укупно на стању m'">                            
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding TotalLength}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Датум убацивања">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding InsertTime}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Датум ажурирања">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding UpdateTime}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Врста">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding TypeOfPanel}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Материјал унео">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Operater}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Материјал ажурирао">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding UpdateOperater}" Style="{StaticResource TableHeader}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </ScrollViewer>
+        
+        <StackPanel Grid.Row="5" Grid.Column="1" VerticalAlignment="Bottom">
             <Button Content="Напусти апликацију" Style="{StaticResource CommandButton}"/>
         </StackPanel>
     </Grid>

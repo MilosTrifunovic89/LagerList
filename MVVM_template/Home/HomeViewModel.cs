@@ -19,7 +19,10 @@ namespace LagerLista.Home
     public class HomeViewModel : ViewModelBase, IHomeViewModel
     {
         private Panel _selectedMaterial;
+        private Workbench _selectedWorkbench;
+
         private ObservableCollection<Panel> _lagerList = new ObservableCollection<Panel>();
+        private ObservableCollection<Workbench> _workbenches = new ObservableCollection<Workbench>();
 
         private ObservableCollection<TypeOfPanel> _typesOfPanel = new ObservableCollection<TypeOfPanel>();
         private TypeOfPanel _selectedMaterialForSearch;
@@ -41,6 +44,15 @@ namespace LagerLista.Home
                 OnPropertyChanged(nameof(LagerList));
             }
         }
+        public ObservableCollection<Workbench> Workbenches
+        {
+            get { return _workbenches; }
+            set
+            {
+                _workbenches = value;
+                OnPropertyChanged(nameof(Workbenches));
+            }
+        }
         public bool RoleMode { get; set; }
         public Panel SelectedMaterial
         {
@@ -50,8 +62,21 @@ namespace LagerLista.Home
                 if (_selectedMaterial != value)
                 {
                     _selectedMaterial = value;
+                    if (_selectedMaterial != null)
+                        _selectedWorkbench = null;
                     OnPropertyChanged(nameof(SelectedMaterial));
                 }
+            }
+        }
+        public Workbench SelectedWorkbench
+        {
+            get { return _selectedWorkbench; }
+            set
+            {
+                _selectedWorkbench = value;
+                if (_selectedWorkbench != null)
+                    _selectedMaterial = null;
+                OnPropertyChanged(nameof(SelectedWorkbench));
             }
         }
 
@@ -76,7 +101,8 @@ namespace LagerLista.Home
 
         public event EventHandler Started;
         public event EventHandler AddNewMaterial;
-        public event EventHandler<PanelEventArgs> EditSelectedMaterial;
+        public event EventHandler<PanelEventArgs> EditSelectedPanel;
+        public event EventHandler<WorkbenchEventArgs> EditSelectedWorkbench;
         public event EventHandler<PanelEventArgs> DeleteMaterial;
 
         public HomeViewModel()
@@ -95,8 +121,16 @@ namespace LagerLista.Home
 
         private void executeEditExistingMaterialCommand()
         {
-            EditSelectedMaterial?.Invoke(this, new PanelEventArgs(SelectedMaterial));
-            ResetToDefault();
+            if (SelectedWorkbench != null)
+            {
+                EditSelectedWorkbench?.Invoke(this, new WorkbenchEventArgs(SelectedWorkbench));
+                ResetToDefault();
+            }
+            else if (SelectedMaterial != null)
+            {
+                EditSelectedPanel?.Invoke(this, new PanelEventArgs(SelectedMaterial));
+                ResetToDefault();
+            }
         }
 
         private void executeAddNewMaterialCommand()
@@ -108,12 +142,14 @@ namespace LagerLista.Home
         private void ResetToDefault()
         {
             SelectedMaterial = null;
+            SelectedWorkbench = null;
         }
 
         public void Start()
         {
             LagerList = new ObservableCollection<Panel>();
             LagerList = Broker.Instance.GetAllPanels();
+            Workbenches = Broker.Instance.GetAllWorkbenches();
 
             RoleMode = true;
 

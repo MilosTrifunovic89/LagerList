@@ -14,6 +14,8 @@ namespace Domain
 
         public ICollection<Panel> Panels { get; set; }
 
+        public ICollection<Workbench> Workbenches { get; set; }
+
         public override string ToString()
         {
             return $"{PanelWidth}";

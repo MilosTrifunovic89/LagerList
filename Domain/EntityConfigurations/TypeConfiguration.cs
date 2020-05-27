@@ -14,6 +14,10 @@ namespace Domain.EntityConfigurations
             HasMany(p => p.Panels)
                 .WithRequired(t => t.TypeOfPanel)
                 .HasForeignKey(t => t.TypeOfPanelId);
+
+            HasMany(w => w.Workbenches)
+                .WithRequired(t => t.TypeOfPanel)
+                .HasForeignKey(t => t.TypeOfPanelId);
         }
     }
 }

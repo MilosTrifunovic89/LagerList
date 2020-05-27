@@ -21,6 +21,7 @@ namespace Domain
         public DbSet<Thickness> Thicknesses { get; set; }
         public DbSet<Operater> Operaters { get; set; }
         public DbSet<TypeOfPanel> TypeOfPanels { get; set; }
+        public DbSet<Workbench> Workbenchs { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -30,6 +31,7 @@ namespace Domain
             modelBuilder.Configurations.Add(new WidthConfiguration());
             modelBuilder.Configurations.Add(new ThicknessConfiguration());
             modelBuilder.Configurations.Add(new TypeConfiguration());
+            modelBuilder.Configurations.Add(new WorkbenchConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

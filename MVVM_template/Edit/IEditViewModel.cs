@@ -8,6 +8,7 @@ namespace LagerLista.Edit
     public interface IEditViewModel : IViewModel
     {
         Panel Panel { get; set; }
+        Workbench Workbench { get; set; }
 
         event EventHandler Started;
         event EventHandler Succeeded;

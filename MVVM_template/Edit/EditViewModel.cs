@@ -16,6 +16,7 @@ namespace LagerLista.Edit
         private bool _newVisible;
         private HomeViewModelResultType _result;
         private Panel _panel;
+        private Workbench _workbench;
         private string _name;
         private Length _selectedLength = new Length();
         private Width _selectedWidth = new Width();
@@ -206,7 +207,15 @@ namespace LagerLista.Edit
                 OnPropertyChanged(nameof(UpdateQuantity));
             }
         }
-
+        public Workbench Workbench
+        {
+            get { return _workbench; }
+            set
+            {
+                _workbench = value;
+                OnPropertyChanged(nameof(Workbench));
+            }
+        }
 
         public RelayCommand GoBackCommand => _goBack;
         public RelayCommand CreateNewCommand => _createNew;
@@ -230,7 +239,7 @@ namespace LagerLista.Edit
         public event EventHandler<PanelEventArgs> Update;
 
         private void executeUpdateCommand()
-        {            
+        {
             Panel panel = EditExistingPanel(Broker.Instance.Context.Panels.Find(Panel.Id));
             Broker.Instance.Context.SaveChanges();
             PanelSurface = Math.Round(panel.PanelSurface, 2).ToString();
@@ -251,6 +260,8 @@ namespace LagerLista.Edit
             panel.LengthId = SelectedLength.Id;
             panel.WidthId = SelectedWidth.Id;
             panel.ThicknessId = SelectedThickness.Id;
+            if (UpdateQuantity == null)
+                UpdateQuantity = 0;
             panel.Quantity = (int)Quantity + (int)UpdateQuantity;
             Quantity += UpdateQuantity;
             panel.PanelSurface = Math.Round(((double)SelectedLength.PanelLength / 1000 * SelectedWidth.PanelWidth / 1000), 2);
@@ -324,7 +335,7 @@ namespace LagerLista.Edit
 
         private void SetPanel()
         {
-            Name = Panel.Name;            
+            Name = Panel.Name;
             SelectedTypeOfPanel = Broker.Instance.Context.TypeOfPanels.Find(Panel.TypeOfPanel.Id);
             SelectedLength = Broker.Instance.Context.Lengths.Find(Panel.Length.Id);
             SelectedWidth = Broker.Instance.Context.Widths.Find(Panel.Width.Id);

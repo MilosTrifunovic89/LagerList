@@ -14,6 +14,10 @@ namespace Domain.EntityConfigurations
             HasMany(p => p.Panels)
                 .WithRequired(l => l.Length)
                 .HasForeignKey(l => l.LengthId);
+
+            HasMany(w => w.Workbenchs)
+                .WithRequired(l => l.Length)
+                .HasForeignKey(l => l.LengthId);
         }
     }
 }

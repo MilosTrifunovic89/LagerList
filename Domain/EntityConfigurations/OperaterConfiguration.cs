@@ -37,6 +37,16 @@ namespace Domain.EntityConfigurations
                 .WithRequired(o => o.UpdateOperater)
                 .HasForeignKey(o => o.UpdateOperaterId)
                 .WillCascadeOnDelete(false);
+
+            HasMany(w => w.Workbenches)
+                .WithRequired(o => o.Operater)
+                .HasForeignKey(o => o.OperaterId)
+                .WillCascadeOnDelete(false);
+
+            HasMany(w => w.UpdatedWorkbenches)
+                .WithRequired(o => o.UpdateOperater)
+                .HasForeignKey(o => o.UpdateOperaterId)
+                .WillCascadeOnDelete(false);
         }
     }
 }

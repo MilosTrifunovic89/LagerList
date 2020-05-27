@@ -12,7 +12,8 @@ namespace LagerLista.Home
 
         event EventHandler Started;
         event EventHandler AddNewMaterial;
-        event EventHandler<PanelEventArgs> EditSelectedMaterial;
+        event EventHandler<PanelEventArgs> EditSelectedPanel;
+        event EventHandler<WorkbenchEventArgs> EditSelectedWorkbench;
         event EventHandler<PanelEventArgs> DeleteMaterial;
 
         void Start();

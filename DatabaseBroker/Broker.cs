@@ -138,6 +138,57 @@ namespace DatabaseBroker
 
             return lagerList;
         }
-        #endregion
+
+        public ObservableCollection<Workbench> GetAllWorkbenches()
+        {
+            ObservableCollection<Workbench> allWorkbenches = new ObservableCollection<Workbench>();
+
+            var workbenches = (from workbench in context.Workbenchs
+                          join length in context.Lengths on workbench.LengthId equals length.Id
+                          join width in context.Widths on workbench.WidthId equals width.Id
+                          join thickness in context.Thicknesses on workbench.ThicknessId equals thickness.Id
+                          join type in context.TypeOfPanels on workbench.TypeOfPanelId equals type.Id
+                          join operater in context.Operaters on workbench.OperaterId equals operater.Id
+                          join updateOperater in context.Operaters on workbench.UpdateOperaterId equals updateOperater.Id
+                          select new
+                          {
+                              id = workbench.Id,
+                              name = workbench.Name,
+                              length = workbench.Length,
+                              width = workbench.Width,
+                              thickness = workbench.Thickness,
+                              type = workbench.TypeOfPanel,
+                              operater = workbench.Operater,
+                              updateOperater = workbench.UpdateOperater,
+                              quantity = workbench.Quantity,
+                              insertTime = workbench.InsertTime,
+                              updateTime = workbench.UpdateTime,
+                              totalLength = workbench.TotalLength
+                          }).ToList();
+
+            foreach (var workbench in workbenches)
+            {
+                Workbench w = new Workbench()
+                {
+                    Name = workbench.name,
+                    Quantity = workbench.quantity,
+                    UpdateTime = workbench.updateTime,
+                    Id = workbench.id,
+                    InsertTime = workbench.insertTime,
+                    Operater = workbench.operater,
+                    UpdateOperater = workbench.updateOperater,
+                    Length = workbench.length,
+                    Thickness = workbench.thickness,
+                    TypeOfPanel = workbench.type,
+                    Width = workbench.width,
+                    TotalLength= workbench.totalLength
+                };
+
+                allWorkbenches.Add(w);
+            }
+
+            return allWorkbenches;
+            #endregion
+        }
     }
 }
