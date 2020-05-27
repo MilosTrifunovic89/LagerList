@@ -26,8 +26,9 @@ namespace LagerLista.Main
             _editViewModel = editViewModel;
             _editViewModel.Started += editViewModel_Started;
             _editViewModel.Succeeded += editViewModel_Succeeded;
-            _editViewModel.CreateNew += editViewModel_CreateNew;
+            _editViewModel.CreateNewPanel += editViewModel_CreateNewPanel;
             _editViewModel.Update += editViewModel_Update;
+            _editViewModel.CreateNewWorkbench += editViewModel_CreateNewWorkbench;
 
 
             setHomePageCurrent();
@@ -50,7 +51,14 @@ namespace LagerLista.Main
 
         }
 
-        private void editViewModel_CreateNew(object sender, PanelEventArgs e)
+        private void editViewModel_CreateNewWorkbench(object sender, WorkbenchEventArgs e)
+        {
+            _context.Workbenchs.Add(e.Workbench);
+            _context.SaveChanges();
+            _homeViewModel.Workbenches.Add(e.Workbench);
+        }
+
+        private void editViewModel_CreateNewPanel(object sender, PanelEventArgs e)
         {
             _context.Panels.Add(e.Panel);
             _context.SaveChanges();

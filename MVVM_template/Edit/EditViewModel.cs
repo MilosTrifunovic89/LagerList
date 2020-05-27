@@ -32,7 +32,10 @@ namespace LagerLista.Edit
         private bool _isEnabledQuantity;
         private bool _updateQuantityVisible;
         private int? _updateQuantity;
-
+        private string _totalLength;
+        private bool _typeIsEnabled;
+        private bool _workbenchVisible;
+        private bool _panelVisible;
 
         private RelayCommand _goBack;
         private RelayCommand _createNew;
@@ -143,6 +146,16 @@ namespace LagerLista.Edit
             set
             {
                 _selectedTypeOfPanel = value;
+                if (_selectedTypeOfPanel != null && _selectedTypeOfPanel.PanelType == "Radna Ploca")
+                {
+                    WorkbenchVisible = true;
+                    PanelVisible = false;
+                }
+                else if (_selectedTypeOfPanel != null && _selectedTypeOfPanel.PanelType != "Radna Ploca")
+                {
+                    WorkbenchVisible = false;
+                    PanelVisible = true;
+                }
                 OnPropertyChanged(nameof(SelectedTypeOfPanel));
             }
         }
@@ -216,6 +229,42 @@ namespace LagerLista.Edit
                 OnPropertyChanged(nameof(Workbench));
             }
         }
+        public string TotalLength
+        {
+            get { return _totalLength; }
+            set
+            {
+                _totalLength = value;
+                OnPropertyChanged(nameof(TotalLength));
+            }
+        }
+        public bool TypeIsEnabled
+        {
+            get { return _typeIsEnabled; }
+            set
+            {
+                _typeIsEnabled = value;
+                OnPropertyChanged(nameof(TypeIsEnabled));
+            }
+        }
+        public bool PanelVisible
+        {
+            get { return _panelVisible; }
+            set
+            {
+                _panelVisible = value;
+                OnPropertyChanged(nameof(PanelVisible));
+            }
+        }
+        public bool WorkbenchVisible
+        {
+            get { return _workbenchVisible; }
+            set
+            {
+                _workbenchVisible = value;
+                OnPropertyChanged(nameof(WorkbenchVisible));
+            }
+        }
 
         public RelayCommand GoBackCommand => _goBack;
         public RelayCommand CreateNewCommand => _createNew;
@@ -235,15 +284,25 @@ namespace LagerLista.Edit
 
         public event EventHandler Started;
         public event EventHandler Succeeded;
-        public event EventHandler<PanelEventArgs> CreateNew;
+        public event EventHandler<PanelEventArgs> CreateNewPanel;
+        public event EventHandler<WorkbenchEventArgs> CreateNewWorkbench;
         public event EventHandler<PanelEventArgs> Update;
 
         private void executeUpdateCommand()
         {
-            Panel panel = EditExistingPanel(Broker.Instance.Context.Panels.Find(Panel.Id));
-            Broker.Instance.Context.SaveChanges();
-            PanelSurface = Math.Round(panel.PanelSurface, 2).ToString();
-            SurfaceInTotal = Math.Round(panel.SurfaceInTotal, 2).ToString();
+            if (SelectedTypeOfPanel.PanelType == "Radna Ploca")
+            {
+                Workbench workbench = EditExistingWorkbench(Broker.Instance.Context.Workbenchs.Find(Workbench.Id));
+                Broker.Instance.Context.SaveChanges();
+                TotalLength = workbench.TotalLength.ToString() + " m'";
+            }
+            else
+            {
+                Panel panel = EditExistingPanel(Broker.Instance.Context.Panels.Find(Panel.Id));
+                Broker.Instance.Context.SaveChanges();
+                PanelSurface = Math.Round(panel.PanelSurface, 2).ToString();
+                SurfaceInTotal = Math.Round(panel.SurfaceInTotal, 2).ToString();
+            }
         }
 
         internal bool IsLessThenZero()
@@ -251,6 +310,23 @@ namespace LagerLista.Edit
             if (Quantity + UpdateQuantity < 0)
                 return true;
             return false;
+        }
+
+        private Workbench EditExistingWorkbench(Workbench workbench)
+        {
+            workbench.Name = Name;
+            workbench.LengthId = SelectedLength.Id;
+            workbench.WidthId = SelectedWidth.Id;
+            workbench.ThicknessId = SelectedThickness.Id;
+            if (UpdateQuantity == null)
+                UpdateQuantity = 0;
+            workbench.Quantity = (int)Quantity + (int)UpdateQuantity;
+            Quantity += UpdateQuantity;
+            workbench.TotalLength = (double)SelectedLength.PanelLength / 1000 * (int)Quantity;
+            workbench.UpdateTime = DateTime.Now;
+            workbench.UpdateOperaterId = 1;
+
+            return workbench;
         }
 
         private Panel EditExistingPanel(Panel panel)
@@ -276,19 +352,61 @@ namespace LagerLista.Edit
         {
             if (!IsEmptyFields())
             {
-                Panel = CreateNewPanel();
+                if (SelectedTypeOfPanel.PanelType == "Radna Ploca")
+                {
+                    Workbench = CreateWorkbench();
+                    TotalLength = Workbench.TotalLength.ToString() + " m'";
 
-                PanelSurface = Math.Round(Panel.PanelSurface, 2).ToString();
-                SurfaceInTotal = Math.Round(Panel.SurfaceInTotal, 2).ToString();
+                    CreateNewWorkbench?.Invoke(this, new WorkbenchEventArgs(Workbench));
+                }
+                else
+                {
+                    Panel = CreatePanel();
+                    PanelSurface = Math.Round(Panel.PanelSurface, 2).ToString();
+                    SurfaceInTotal = Math.Round(Panel.SurfaceInTotal, 2).ToString();
 
-                CreateNew?.Invoke(this, new PanelEventArgs(Panel));
-
+                    CreateNewPanel?.Invoke(this, new PanelEventArgs(Panel));
+                }
                 UpdateVisible = true;
-                NewVisible = false;
+                //NewVisible = false;
             }
         }
 
-        private Panel CreateNewPanel()
+        internal bool IsExistPanelOrWorkbench()
+        {
+            if (Workbench != null)
+                return Broker.Instance.Context.Workbenchs.Any(x => x.Name == Workbench.Name);
+            else if (Panel != null)
+                return Broker.Instance.Context.Panels.Any(x => x.Name == Panel.Name);
+            return false;
+        }
+
+        private Workbench CreateWorkbench()
+        {
+            return new Workbench()
+            {
+                Name = Name,
+                InsertTime = DateTime.Now,
+                UpdateTime = DateTime.Now,
+                LengthId = SelectedLength.Id,
+
+                WidthId = SelectedWidth.Id,
+
+                Quantity = (int)Quantity,
+
+                TotalLength = (double)SelectedLength.PanelLength / 1000 * (int)Quantity,
+
+                ThicknessId = SelectedThickness.Id,
+
+                TypeOfPanelId = SelectedTypeOfPanel.Id,
+
+                OperaterId = 1,
+
+                UpdateOperaterId = 1
+            };
+        }
+
+        private Panel CreatePanel()
         {
             return new Panel()
             {
@@ -331,6 +449,8 @@ namespace LagerLista.Edit
             PanelSurface = null;
             SurfaceInTotal = null;
             UpdateQuantity = null;
+            WorkbenchVisible = false;
+            PanelVisible = false;
         }
 
         private void SetPanel()
@@ -343,6 +463,17 @@ namespace LagerLista.Edit
             Quantity = Panel.Quantity;
             PanelSurface = Math.Round(Panel.PanelSurface, 2).ToString();
             SurfaceInTotal = Math.Round(Panel.SurfaceInTotal, 2).ToString();
+        }
+
+        private void SetWorkbench()
+        {
+            Name = Workbench.Name;
+            SelectedTypeOfPanel = Broker.Instance.Context.TypeOfPanels.Find(Workbench.TypeOfPanel.Id);
+            SelectedLength = Broker.Instance.Context.Lengths.Find(Workbench.Length.Id);
+            SelectedWidth = Broker.Instance.Context.Widths.Find(Workbench.Width.Id);
+            SelectedThickness = Broker.Instance.Context.Thicknesses.Find(Workbench.Thickness.Id);
+            Quantity = Workbench.Quantity;
+            TotalLength = Workbench.TotalLength.ToString() + " m'";
         }
 
         private bool IsEmptyFields()
@@ -366,6 +497,8 @@ namespace LagerLista.Edit
         {
             if (Panel != null)
                 SetPanel();
+            else if (Workbench != null)
+                SetWorkbench();
 
             _result = result;
             if (_result == HomeViewModelResultType.AddNew)
@@ -375,6 +508,7 @@ namespace LagerLista.Edit
                 UpdateVisible = false;
                 IsEnabledQuantity = true;
                 UpdateQuantityVisible = false;
+                TypeIsEnabled = true;
             }
             else if (_result == HomeViewModelResultType.EditExisting)
             {
@@ -383,6 +517,18 @@ namespace LagerLista.Edit
                 NewVisible = false;
                 IsEnabledQuantity = false;
                 UpdateQuantityVisible = true;
+                if (SelectedTypeOfPanel.PanelType == "Radna Ploca")
+                {
+                    TypeIsEnabled = false;
+                    WorkbenchVisible = true;
+                    PanelVisible = false;
+                }
+                else
+                {
+                    TypeIsEnabled = true;
+                    WorkbenchVisible = false;
+                    PanelVisible = true;
+                }
             }
             Started?.Invoke(this, new EventArgs());
         }

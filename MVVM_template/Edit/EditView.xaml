@@ -73,7 +73,8 @@
 
                     <WrapPanel Orientation="Vertical" Style="{StaticResource  WrapPanel}">
                         <Label DockPanel.Dock="Top" Content="Врста:" Style="{StaticResource InputLabel}" HorizontalAlignment="Center"/>
-                        <ComboBox SelectedItem="{Binding SelectedTypeOfPanel}" ItemsSource="{Binding TypesOfPanel}" Grid.Row="2" Grid.Column="1" Style="{StaticResource ComboBox}" Width="250">
+                        <ComboBox SelectedItem="{Binding SelectedTypeOfPanel}" ItemsSource="{Binding TypesOfPanel}" Grid.Row="2" Grid.Column="1" Style="{StaticResource ComboBox}" Width="250"
+                                  IsEnabled="{Binding TypeIsEnabled}">
                         </ComboBox>
                     </WrapPanel>
                 </StackPanel>
@@ -120,6 +121,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
@@ -138,17 +140,32 @@
                             <Label Grid.Column="1" Content="табли" Style="{StaticResource InputLabel}"/>
                         </StackPanel>
                     </Border>
-                    <Border Grid.Column="1" Grid.Row="1"  BorderBrush="Black" BorderThickness="1" Margin="5">
+
+                    <Border Grid.Row="1" Grid.Column="1" BorderBrush="Black" BorderThickness="1" Margin="5"
+                            Visibility="{Binding WorkbenchVisible, Converter={StaticResource VisibilityConverter}}">
+                        <Label Content="Укупна дужина на стању" Style="{StaticResource InputLabel}"/>
+                    </Border>
+
+                    <Border Grid.Row="1" Grid.Column="2" BorderBrush="Black" BorderThickness="1" Margin="5"
+                            Visibility="{Binding WorkbenchVisible, Converter={StaticResource VisibilityConverter}}">
+                        <Label Content="{Binding TotalLength}" Style="{StaticResource InputLabel}"/>
+                    </Border>
+
+                    <Border Grid.Column="1" Grid.Row="1"  BorderBrush="Black" BorderThickness="1" Margin="5"
+                            Visibility="{Binding PanelVisible, Converter={StaticResource VisibilityConverter}}">
                         <Label Content="Површина табле m2:" Style="{StaticResource InputLabel}"/>
                     </Border>
-                    <Border Grid.Column="2" Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="5">
+                    <Border Grid.Column="2" Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="5"
+                            Visibility="{Binding PanelVisible, Converter={StaticResource VisibilityConverter}}">
                         <Label Content="{Binding PanelSurface}" Style="{StaticResource InputLabel}"/>
                     </Border>
 
-                    <Border Grid.Row="2" Grid.Column="1" BorderBrush="Black" BorderThickness="1" Margin="5">
+                    <Border Grid.Row="2" Grid.Column="1" BorderBrush="Black" BorderThickness="1" Margin="5"
+                            Visibility="{Binding PanelVisible, Converter={StaticResource VisibilityConverter}}">
                         <Label Content="Укупна површина на стању m2:" Style="{StaticResource InputLabel}"/>
                     </Border>
-                    <Border Grid.Row="2" Grid.Column="2" BorderBrush="Black" BorderThickness="1" Margin="5">
+                    <Border Grid.Row="2" Grid.Column="2" BorderBrush="Black" BorderThickness="1" Margin="5"
+                            Visibility="{Binding PanelVisible, Converter={StaticResource VisibilityConverter}}">
                         <Label Content="{Binding SurfaceInTotal}" Style="{StaticResource InputLabel}"/>
                     </Border>
                 </Grid>
@@ -167,8 +184,10 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button Command="{Binding CreateNewCommand}" Visibility="{Binding NewVisible, Converter={StaticResource VisibilityConverter}}" Grid.Column="1" Content="Унеси" Style="{StaticResource CommandButton}" Width="100"/>
-                    <Button Click="Button_Click" Visibility="{Binding UpdateVisible, Converter={StaticResource VisibilityConverter}}" Grid.Column="1" Content="Ажурирај" Style="{StaticResource CommandButton}" Width="100"/>
+                    <!---->
+
+                    <Button Click="OnCreateNewButtonClick_Event" Visibility="{Binding NewVisible, Converter={StaticResource VisibilityConverter}}" Grid.Column="1" Content="Унеси" Style="{StaticResource CommandButton}" Width="100"/>
+                    <Button Click="OnUpdateButtonClickUpdate_Event" Visibility="{Binding UpdateVisible, Converter={StaticResource VisibilityConverter}}" Grid.Column="2" Content="Ажурирај" Style="{StaticResource CommandButton}" Width="100"/>
                     <Button Command="{Binding GoBackCommand}" Grid.Column="3" Content="Назад" Style="{StaticResource CommandButton}" Width="100"/>
                 </Grid>
             </StackPanel>

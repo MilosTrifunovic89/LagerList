@@ -9,6 +9,7 @@ namespace LagerLista.Home
     public interface IHomeViewModel : IViewModel
     {
         ObservableCollection<Panel> LagerList { get; set; }
+        ObservableCollection<Workbench> Workbenches { get; set; }
 
         event EventHandler Started;
         event EventHandler AddNewMaterial;

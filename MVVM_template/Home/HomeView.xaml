@@ -71,7 +71,8 @@
             </Button>
         </StackPanel>
 
-        <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="5,10,5,5">
+        <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="5,10,5,5" CanContentScroll="True"
+                      MouseWheel="ScrollViewer_MouseWheel">
             <ListView SelectedItem="{Binding SelectedMaterial}" HorizontalContentAlignment="Stretch" ItemsSource="{Binding LagerList}" 
                       Background="{StaticResource ThemeWhite}" Foreground="{StaticResource ThemeBlack}"
                       Opacity="0.82">

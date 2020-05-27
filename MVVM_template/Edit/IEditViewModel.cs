@@ -12,7 +12,8 @@ namespace LagerLista.Edit
 
         event EventHandler Started;
         event EventHandler Succeeded;
-        event EventHandler<PanelEventArgs> CreateNew;
+        event EventHandler<PanelEventArgs> CreateNewPanel;
+        event EventHandler<WorkbenchEventArgs> CreateNewWorkbench;
         event EventHandler<PanelEventArgs> Update;
 
         void Start(HomeViewModelResultType result);

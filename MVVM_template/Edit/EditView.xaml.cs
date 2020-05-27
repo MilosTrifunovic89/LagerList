@@ -25,7 +25,7 @@ namespace LagerLista.Edit
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void OnUpdateButtonClickUpdate_Event(object sender, RoutedEventArgs e)
         {
             if (this.DataContext is EditViewModel editViewModel)
             {
@@ -33,6 +33,17 @@ namespace LagerLista.Edit
                     MessageBox.Show("Крајње стање не може бити мање од 0", "Порука", MessageBoxButton.OK);
                 else
                     editViewModel.UpdateCommand.Execute(null);
+            }
+        }
+
+        private void OnCreateNewButtonClick_Event(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext is EditViewModel editViewModel)
+            {
+                if (editViewModel.IsExistPanelOrWorkbench())
+                    MessageBox.Show("Материјал са унетим називом већ постоји у бази", "Порука", MessageBoxButton.OK);
+                else
+                    editViewModel.CreateNewCommand.Execute(null);
             }
         }
 
