@@ -2,7 +2,7 @@
 {
     using System;
     using System.Data.Entity.Migrations;
-
+    
     public partial class SqlQuerry : DbMigration
     {
         public override void Up()
@@ -16,9 +16,22 @@
             Sql("insert into TypeThicknesses (TypeOfPanel_Id, Thickness_Id) values (1,2),(2,2),(3,1),(4,3)");
             Sql("insert into Operaters (Name, LastName, Password, Role, DateCreated) values ('Milos', 'Trifunovic', 'MILOS', 1, CONVERT(datetime, '200505'))");
         }
-
+        
         public override void Down()
         {
+            Sql("delete from Lengths where id=1");
+            Sql("delete from Lengths where id=2");
+            Sql("delete from Lengths where id=3");
+            Sql("delete from Widths where id=1");
+            Sql("delete from Widths where id=2");
+            Sql("delete from Widths where id=3");
+            Sql("delete from Thicknesses where id=1");
+            Sql("delete from Thicknesses where id=2");
+            Sql("delete from Thicknesses where id=3");
+            Sql("delete from TypeOfPanels where id=1");
+            Sql("delete from TypeOfPanels where id=2");
+            Sql("delete from TypeOfPanels where id=3");
+            Sql("delete from Operaters where id=1");
         }
     }
 }

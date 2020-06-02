@@ -397,9 +397,9 @@ namespace LagerLista.Edit
 
         internal bool IsExistPanelOrWorkbench()
         {
-            if (Workbench != null)
+            if (SelectedTypeOfPanel.PanelType == "Radna Ploca")
                 return Broker.Instance.Context.Workbenchs.Any(x => x.Name == Name);
-            else if (Panel != null)
+            else if (SelectedTypeOfPanel.PanelType != "Radna Ploca")
                 return Broker.Instance.Context.Panels.Any(x => x.Name == Name);
             return false;
         }

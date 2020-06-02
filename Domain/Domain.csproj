@@ -84,9 +84,9 @@
     <Compile Include="Migrations\202005281736069_AddRelationsTypesToDimensions.designer.cs">
       <DependentUpon>202005281736069_AddRelationsTypesToDimensions.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202006021657146_SqlQuerry.cs" />
-    <Compile Include="Migrations\202006021657146_SqlQuerry.designer.cs">
-      <DependentUpon>202006021657146_SqlQuerry.cs</DependentUpon>
+    <Compile Include="Migrations\202006021747242_SqlQuerry.cs" />
+    <Compile Include="Migrations\202006021747242_SqlQuerry.designer.cs">
+      <DependentUpon>202006021747242_SqlQuerry.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Operater.cs" />
@@ -123,8 +123,8 @@
     <EmbeddedResource Include="Migrations\202005281736069_AddRelationsTypesToDimensions.resx">
       <DependentUpon>202005281736069_AddRelationsTypesToDimensions.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202006021657146_SqlQuerry.resx">
-      <DependentUpon>202006021657146_SqlQuerry.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202006021747242_SqlQuerry.resx">
+      <DependentUpon>202006021747242_SqlQuerry.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
