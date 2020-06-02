@@ -16,6 +16,8 @@ namespace Domain
 
         public ICollection<Workbench> Workbenches { get; set; }
 
+        public ICollection<TypeOfPanel> Types { get; set; }
+
         public override string ToString()
         {
             return $"{PanelThickness}";

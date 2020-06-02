@@ -55,32 +55,21 @@ namespace LagerLista.Home
             }
         }
 
-        private void ScrollViewer_MouseWheel(object sender, MouseWheelEventArgs e)
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            ScrollViewer scroll = (ScrollViewer)sender;
-            if (e.Delta < 0)
-            {
-                if (scroll.VerticalOffset - e.Delta <= scroll.ExtentHeight - scroll.ViewportHeight)
-                {
-                    scroll.ScrollToVerticalOffset(scroll.VerticalOffset - e.Delta);
-                }
-                else
-                {
-                    scroll.ScrollToBottom();
-                }
-            }
-            else
-            {
-                if (scroll.VerticalOffset + e.Delta > 0)
-                {
-                    scroll.ScrollToVerticalOffset(scroll.VerticalOffset - e.Delta);
-                }
-                else
-                {
-                    scroll.ScrollToTop();
-                }
-            }
+            ScrollViewer scv = (ScrollViewer)sender;
+            scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
             e.Handled = true;
         }
+
+        //private void ComboBox_Selected(object sender, RoutedEventArgs e)
+        //{
+        //    ComboBox comboBox = (ComboBox)sender;
+
+        //    if (this.DataContext is HomeViewModel homeViewModel)
+        //    {
+        //       homeViewModel.SearchByType.Execute(null);
+        //    }
+        //}
     }
 }

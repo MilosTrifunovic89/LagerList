@@ -18,6 +18,18 @@ namespace Domain.EntityConfigurations
             HasMany(w => w.Workbenches)
                 .WithRequired(t => t.TypeOfPanel)
                 .HasForeignKey(t => t.TypeOfPanelId);
+
+            HasMany(l => l.Lengths)
+                .WithMany(t => t.Types)
+                .Map(m => m.ToTable("TypeLengths"));
+
+            HasMany(w => w.Widths)
+                .WithMany(t => t.Types)
+                .Map(m => m.ToTable("TypeWidths"));
+
+            HasMany(t => t.Thicknesses)
+                .WithMany(t => t.Types)
+                .Map(m => m.ToTable("TypeThicknesses"));
         }
     }
 }

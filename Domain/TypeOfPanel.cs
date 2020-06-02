@@ -16,6 +16,12 @@ namespace Domain
 
         public ICollection<Workbench> Workbenches { get; set; }
 
+        public ICollection<Length> Lengths { get; set; }
+
+        public ICollection<Width> Widths { get; set; }
+
+        public ICollection<Thickness> Thicknesses { get; set; }
+
         public override string ToString()
         {
             return $"{PanelType}";

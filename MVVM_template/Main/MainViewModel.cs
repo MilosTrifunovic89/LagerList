@@ -3,6 +3,7 @@ using LagerLista.Base.ViewModel;
 using LagerLista.Edit;
 using LagerLista.Home;
 using System;
+using System.Collections.ObjectModel;
 
 namespace LagerLista.Main
 {

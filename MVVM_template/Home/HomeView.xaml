@@ -6,11 +6,11 @@
              xmlns:local="clr-namespace:LagerLista.Home"
              mc:Ignorable="d" 
              d:DesignHeight="700" d:DesignWidth="1000">
-    
+
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="VisibilityConverter" />
     </UserControl.Resources>
-    
+
     <Grid Margin="5" Background="#797994">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3.7*"/>
@@ -20,8 +20,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -61,18 +59,34 @@
             </Border>
         </Grid>
 
-        <StackPanel Grid.Row="2" HorizontalAlignment="Right" Orientation="Horizontal" Height="30">
-
-            <ComboBox Style="{StaticResource ComboBox}" Width="250" ItemsSource="{Binding TypesOfPanel}" SelectedItem="{Binding SelectedItemForSearch}"/>
-
-            <TextBox  Style="{StaticResource InputTextBox}"/>
-            <Button Style="{StaticResource SearchButton}" ToolTip="Pretrazi">
-                <Image Source="/Assets/Icons/Search_icon.png" Stretch="Fill"/>
-            </Button>
+        <StackPanel Grid.Row="2" HorizontalAlignment="Right" Orientation="Horizontal">
+            <StackPanel>
+                <Label Content="Сортирање" Style="{StaticResource InputLabel}" HorizontalAlignment="Center"/>
+                <ComboBox Style="{StaticResource ComboBox}"/>
+            </StackPanel>
+            
+            <StackPanel>
+                <Label Content="Одабери врсту" Style="{StaticResource InputLabel}" HorizontalAlignment="Center"/>
+                    <ComboBox Style="{StaticResource ComboBox}" Width="250" ItemsSource="{Binding TypesOfPanel}" SelectedItem="{Binding SelectedMaterialForSearch}">
+                    <!--<ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock 
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>-->
+                </ComboBox>
+            </StackPanel>
+            <StackPanel>
+                <Label Content="Претрага по називу" Style="{StaticResource InputLabel}" HorizontalAlignment="Center"/>
+                <TextBox Text="{Binding SearchText}"  Style="{StaticResource InputTextBox}"/>
+            </StackPanel>
+            <StackPanel>
+                <Button Command="{Binding SearchCommand}" Style="{StaticResource SearchButton}" ToolTip="Pretrazi" Height="30" Margin="5,30,0,0">
+                    <Image Source="/Assets/Icons/Search_icon.png" Stretch="Fill"/>
+                </Button>
+            </StackPanel>
         </StackPanel>
 
-        <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="5,10,5,5" CanContentScroll="True"
-                      MouseWheel="ScrollViewer_MouseWheel">
+        <ScrollViewer Visibility="{Binding IsPanelVisible, Converter={StaticResource VisibilityConverter}}" Grid.Row="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="5,10,5,5" CanContentScroll="True" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
             <ListView SelectedItem="{Binding SelectedMaterial}" HorizontalContentAlignment="Stretch" ItemsSource="{Binding LagerList}" 
                       Background="{StaticResource ThemeWhite}" Foreground="{StaticResource ThemeBlack}"
                       Opacity="0.82">
@@ -200,14 +214,14 @@
             <Button Click="OnDeleteMaterialButtonClick_Event" Content="Избриши" Style="{StaticResource CommandButton}"/>
         </StackPanel>
 
-        <ScrollViewer Grid.Row="5" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="5,10,5,5">
+        <ScrollViewer Visibility="{Binding IsWorkbenchVisible, Converter={StaticResource VisibilityConverter}}" Grid.Row="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="5,10,5,5">
             <ListView SelectedItem="{Binding SelectedWorkbench}" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Workbenches}" 
                       Background="{StaticResource ThemeWhite}" Foreground="{StaticResource ThemeBlack}"
                       Opacity="0.82">
                 <ListView.View>
                     <GridView AllowsColumnReorder="False" ColumnHeaderToolTip="Лагер листа">
 
-                        <GridViewColumn Header="Рб.">
+                        <GridViewColumn Header="Рб." Width="50"> <!--50-->
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Id}" Style="{StaticResource TableHeader}"/>
@@ -215,7 +229,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="Назив">
+                        <GridViewColumn Header="Назив"  Width="250"> <!--250-->
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Name}" Style="{StaticResource TableHeader}"/>
@@ -223,7 +237,8 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="Дужина">
+
+                        <GridViewColumn Header="Дужина" Width="80"> <!--80-->
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Length}" Style="{StaticResource TableHeader}"/>
@@ -231,7 +246,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="Ширина">
+                        <GridViewColumn Header="Ширина" Width="80"> <!--80-->
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Width}" Style="{StaticResource TableHeader}"/>
@@ -239,7 +254,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="Дебљина">
+                        <GridViewColumn Header="Дебљина" Width="80"> <!--80-->
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Thickness}" Style="{StaticResource TableHeader}"/>
@@ -247,7 +262,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="Количина">
+                        <GridViewColumn Header="Количина" Width="80"> <!--80-->
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Quantity}" Style="{StaticResource TableHeader}" Foreground="Red"/>
@@ -255,7 +270,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="Укупно на стању m'">                            
+                        <GridViewColumn Header="Укупно на стању m'" Width="80"> <!--80-->
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding TotalLength}" Style="{StaticResource TableHeader}"/>
@@ -263,7 +278,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="Датум убацивања">
+                        <GridViewColumn Header="Датум убацивања" Width="210"> <!--210-->
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding InsertTime}" Style="{StaticResource TableHeader}"/>
@@ -271,7 +286,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="Датум ажурирања">
+                        <GridViewColumn Header="Датум ажурирања" Width="210"> <!--210-->
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding UpdateTime}" Style="{StaticResource TableHeader}"/>
@@ -279,7 +294,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="Врста">
+                        <GridViewColumn Header="Врста" Width="130"> <!--130-->
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding TypeOfPanel}" Style="{StaticResource TableHeader}"/>
@@ -287,7 +302,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="Материјал унео">
+                        <GridViewColumn Header="Материјал унео" Width="150"> <!--150-->
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Operater}" Style="{StaticResource TableHeader}"/>
@@ -295,7 +310,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="Материјал ажурирао">
+                        <GridViewColumn Header="Материјал ажурирао" Width="150"> <!--150-->
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding UpdateOperater}" Style="{StaticResource TableHeader}"/>
@@ -307,8 +322,8 @@
                 </ListView.View>
             </ListView>
         </ScrollViewer>
-        
-        <StackPanel Grid.Row="5" Grid.Column="1" VerticalAlignment="Bottom">
+
+        <StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Bottom">
             <Button Content="Напусти апликацију" Style="{StaticResource CommandButton}"/>
         </StackPanel>
     </Grid>

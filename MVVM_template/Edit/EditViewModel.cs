@@ -36,6 +36,7 @@ namespace LagerLista.Edit
         private bool _typeIsEnabled;
         private bool _workbenchVisible;
         private bool _panelVisible;
+        private bool _isEnabledDimensions;
 
         private RelayCommand _goBack;
         private RelayCommand _createNew;
@@ -148,11 +149,15 @@ namespace LagerLista.Edit
                 _selectedTypeOfPanel = value;
                 if (_selectedTypeOfPanel != null && _selectedTypeOfPanel.PanelType == "Radna Ploca")
                 {
+                    IsEnabledDimensions = true;
+                    LoadDimensions();
                     WorkbenchVisible = true;
                     PanelVisible = false;
                 }
                 else if (_selectedTypeOfPanel != null && _selectedTypeOfPanel.PanelType != "Radna Ploca")
                 {
+                    IsEnabledDimensions = true;
+                    LoadDimensions();
                     WorkbenchVisible = false;
                     PanelVisible = true;
                 }
@@ -265,6 +270,15 @@ namespace LagerLista.Edit
                 OnPropertyChanged(nameof(WorkbenchVisible));
             }
         }
+        public bool IsEnabledDimensions
+        {
+            get { return _isEnabledDimensions; }
+            set
+            {
+                _isEnabledDimensions = value;
+                OnPropertyChanged(nameof(IsEnabledDimensions));
+            }
+        }
 
         public RelayCommand GoBackCommand => _goBack;
         public RelayCommand CreateNewCommand => _createNew;
@@ -272,9 +286,9 @@ namespace LagerLista.Edit
 
         public EditViewModel()
         {
-            Lengths = Broker.Instance.GetAllLengths();
-            Widths = Broker.Instance.GetAllWidths();
-            Thicknesses = Broker.Instance.GetAllThicknesses();
+            //Lengths = Broker.Instance.GetAllLengths();
+            //Widths = Broker.Instance.GetAllWidths();
+            //Thicknesses = Broker.Instance.GetAllThicknesses();
             TypesOfPanel = Broker.Instance.GetAllTypes();
 
             _goBack = new RelayCommand(executeGoBackCommand);
@@ -288,13 +302,22 @@ namespace LagerLista.Edit
         public event EventHandler<WorkbenchEventArgs> CreateNewWorkbench;
         public event EventHandler<PanelEventArgs> Update;
 
+        private void LoadDimensions()
+        {
+            Lengths = new ObservableCollection<Length>(Broker.Instance.Context.Lengths.Where(x => x.Types.Any(t => t.Id == SelectedTypeOfPanel.Id)));
+
+            Widths = new ObservableCollection<Width>(Broker.Instance.Context.Widths.Where(x => x.Types.Any(t => t.Id == SelectedTypeOfPanel.Id)));
+
+            Thicknesses = new ObservableCollection<Thickness>(Broker.Instance.Context.Thicknesses.Where(x => x.Types.Any(t => t.Id == SelectedTypeOfPanel.Id)));
+        }
+
         private void executeUpdateCommand()
         {
             if (SelectedTypeOfPanel.PanelType == "Radna Ploca")
             {
                 Workbench workbench = EditExistingWorkbench(Broker.Instance.Context.Workbenchs.Find(Workbench.Id));
                 Broker.Instance.Context.SaveChanges();
-                TotalLength = workbench.TotalLength.ToString() + " m'";
+                TotalLength = workbench.TotalLength.ToString();
             }
             else
             {
@@ -355,7 +378,7 @@ namespace LagerLista.Edit
                 if (SelectedTypeOfPanel.PanelType == "Radna Ploca")
                 {
                     Workbench = CreateWorkbench();
-                    TotalLength = Workbench.TotalLength.ToString() + " m'";
+                    TotalLength = Workbench.TotalLength.ToString();
 
                     CreateNewWorkbench?.Invoke(this, new WorkbenchEventArgs(Workbench));
                 }
@@ -375,9 +398,9 @@ namespace LagerLista.Edit
         internal bool IsExistPanelOrWorkbench()
         {
             if (Workbench != null)
-                return Broker.Instance.Context.Workbenchs.Any(x => x.Name == Workbench.Name);
+                return Broker.Instance.Context.Workbenchs.Any(x => x.Name == Name);
             else if (Panel != null)
-                return Broker.Instance.Context.Panels.Any(x => x.Name == Panel.Name);
+                return Broker.Instance.Context.Panels.Any(x => x.Name == Name);
             return false;
         }
 
@@ -440,6 +463,7 @@ namespace LagerLista.Edit
         private void ResetToDefault()
         {
             Panel = null;
+            Workbench = null;
             SelectedLength = null;
             SelectedThickness = null;
             SelectedWidth = null;
@@ -451,6 +475,7 @@ namespace LagerLista.Edit
             UpdateQuantity = null;
             WorkbenchVisible = false;
             PanelVisible = false;
+            IsEnabledDimensions = false;
         }
 
         private void SetPanel()
@@ -473,7 +498,7 @@ namespace LagerLista.Edit
             SelectedWidth = Broker.Instance.Context.Widths.Find(Workbench.Width.Id);
             SelectedThickness = Broker.Instance.Context.Thicknesses.Find(Workbench.Thickness.Id);
             Quantity = Workbench.Quantity;
-            TotalLength = Workbench.TotalLength.ToString() + " m'";
+            TotalLength = Workbench.TotalLength.ToString();
         }
 
         private bool IsEmptyFields()
@@ -503,6 +528,7 @@ namespace LagerLista.Edit
             _result = result;
             if (_result == HomeViewModelResultType.AddNew)
             {
+                IsEnabledDimensions = false;
                 Caption = $"Додавање новог материјала";
                 NewVisible = true;
                 UpdateVisible = false;
@@ -512,6 +538,7 @@ namespace LagerLista.Edit
             }
             else if (_result == HomeViewModelResultType.EditExisting)
             {
+                TypeIsEnabled = false;
                 Caption = $"Ажурирање постојећег материјала";
                 UpdateVisible = true;
                 NewVisible = false;
@@ -519,19 +546,16 @@ namespace LagerLista.Edit
                 UpdateQuantityVisible = true;
                 if (SelectedTypeOfPanel.PanelType == "Radna Ploca")
                 {
-                    TypeIsEnabled = false;
                     WorkbenchVisible = true;
                     PanelVisible = false;
                 }
                 else
                 {
-                    TypeIsEnabled = true;
                     WorkbenchVisible = false;
                     PanelVisible = true;
                 }
             }
             Started?.Invoke(this, new EventArgs());
         }
-
     }
 }
